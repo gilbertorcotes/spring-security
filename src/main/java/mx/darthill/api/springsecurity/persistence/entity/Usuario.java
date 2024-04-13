@@ -1,10 +1,8 @@
 package mx.darthill.api.springsecurity.persistence.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import mx.darthill.api.springsecurity.persistence.util.Rol;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +14,14 @@ import java.util.stream.Collectors;
 @Table (name = "Usuario")
 public class Usuario implements UserDetails {
 
-    private String username;
-    private String usuario;
-    private String password;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(unique = true)
+    private String username;
+    private String name;
+    private String password;
     @Enumerated(EnumType.STRING)
     private Rol role;
 
@@ -72,15 +74,35 @@ public class Usuario implements UserDetails {
         this.username = username;
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String Name() {
+        return name;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Rol getRole() {
+        return role;
+    }
+
+    public void setRole(Rol role) {
+        this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
