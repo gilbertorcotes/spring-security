@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class SaveUsuario implements Serializable {
 
     @Size(min = 8)
-    private String nombre;
+    private String name;
     @Size(min = 8)
     private String username;
     @Size(min = 8)
@@ -16,11 +16,11 @@ public class SaveUsuario implements Serializable {
     private String repeatedPassword;
 
     public String getNombre() {
-        return nombre;
+        return name;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.name = nombre;
     }
 
     public String getUsername() {
