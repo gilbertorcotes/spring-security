@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
@@ -32,12 +33,13 @@ public class Usuario implements UserDetails {
 
         if(role.getPermissions() == null) return null;
 
-        return role.getPermissions().stream()
-                .map(each -> {
-                    String permission = each.name();
-                    return new SimpleGrantedAuthority(permission);
-                })
+        List<SimpleGrantedAuthority> authorities = role.getPermissions().stream()
+                .map(each -> each.name())
+                .map(each -> new SimpleGrantedAuthority(each))
                 .collect(Collectors.toList());
+
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
+        return authorities;
     }
 
     @Override

@@ -4,8 +4,10 @@ import mx.darthill.api.springsecurity.dto.RegisterUser;
 import mx.darthill.api.springsecurity.dto.SaveUsuario;
 import mx.darthill.api.springsecurity.dto.auth.AuthenticationRequest;
 import mx.darthill.api.springsecurity.dto.auth.AuthenticationResponse;
+import mx.darthill.api.springsecurity.exeption.ObjectNotFoundException;
 import mx.darthill.api.springsecurity.persistence.entity.Usuario;
 import mx.darthill.api.springsecurity.service.UserService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -80,6 +82,18 @@ public class AuthenticationService {
             System.out.println(e.getMessage());
             return false;
         }
+
+    }
+
+    public Usuario findLoggedInUser() {
+
+        UsernamePasswordAuthenticationToken auth =
+                (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+
+        String username = (String) auth.getPrincipal();
+
+        return userService.findByUsername(username)
+            .orElseThrow(() -> new ObjectNotFoundException("Usuario no encontrado : " + username));
 
     }
 }

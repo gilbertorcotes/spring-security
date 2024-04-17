@@ -5,7 +5,7 @@ import java.util.List;
 
 public enum Rol {
 
-    ROLE_ADMINISTRATOR(Arrays.asList(
+    ADMINISTRATOR(Arrays.asList(
             RolPermission.READ_ALL_VETERINARIOS,
             RolPermission.READ_ONE_VETERINARIOS,
             RolPermission.CREATE_ONE_VETERINARIOS,
@@ -20,7 +20,7 @@ public enum Rol {
 
             RolPermission.READ_PROFILE
             )),
-    ROLE_OPERATOR(Arrays.asList(
+    OPERATOR(Arrays.asList(
             RolPermission.READ_ALL_VETERINARIOS,
             RolPermission.READ_ONE_VETERINARIOS,
             RolPermission.UPDATE_ONE_VETERINARIOS,
@@ -31,7 +31,7 @@ public enum Rol {
 
             RolPermission.READ_PROFILE
     )),
-    ROLE_CUSTOMER(Arrays.asList(
+    CUSTOMER(Arrays.asList(
             RolPermission.READ_PROFILE
     ));
 

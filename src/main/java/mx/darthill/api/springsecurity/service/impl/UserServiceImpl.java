@@ -7,10 +7,6 @@ import mx.darthill.api.springsecurity.persistence.repository.UserRepository;
 import mx.darthill.api.springsecurity.persistence.util.Rol;
 import mx.darthill.api.springsecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -35,7 +31,7 @@ public class UserServiceImpl implements UserService{
         usuario.setPassword(passwordEncoder.encode(newUser.getPassword()));
         usuario.setName(newUser.getNombre());
         usuario.setUsername(newUser.getUsername());
-        usuario.setRole(Rol.ROLE_CUSTOMER);
+        usuario.setRole(Rol.CUSTOMER);
 
         return userRepository.save(usuario);
     }
