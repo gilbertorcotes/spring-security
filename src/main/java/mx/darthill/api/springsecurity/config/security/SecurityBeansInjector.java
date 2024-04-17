@@ -42,7 +42,7 @@ public class SecurityBeansInjector {
     public UserDetailsService userDetailsService(){
         return (username) -> {
             return userRepository.findByUsername(username)
-                    .orElseThrow(() -> new ObjectNotFoundException("Usuario no encontrado con wl nombre : " username));
+                    .orElseThrow(() -> new ObjectNotFoundException("Usuario no encontrado con wl nombre : "+ username));
 
         };
     }
