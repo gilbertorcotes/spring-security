@@ -1,7 +1,7 @@
 -- CREACIÓN DE USUARIOS
-INSERT INTO usuario (username, name, password, role) VALUES ('lmarquez', 'luis márquez', '$2a$10$sUITtLBJGY6GxYRDXodjvuOiR2IvY4C7t/tMdm4EGvZ0/GtH.sgGi', 'ROLE_CUSTOMER');
-INSERT INTO usuario (username, name, password, role) VALUES ('fperez', 'fulano pérez', '$2a$10$uCeFoJPHERu5dCJZTEQIsOC8WqdhN8QsOT2nJIVeUjy7yIfqxAHUq', 'ROLE_OPERATOR');
-INSERT INTO usuario (username, name, password, role) VALUES ('mhernandez', 'mengano hernández', '$2a$10$kvD/uzv976mSDfgTo0LslOrUDLwZxNphWFEue5/XwM.1J8XtDS9wC', 'ROLE_ADMINISTRATOR');
+INSERT INTO usuario (username, name, password, role) VALUES ('lmarquez', 'luis márquez', '$2a$10$sUITtLBJGY6GxYRDXodjvuOiR2IvY4C7t/tMdm4EGvZ0/GtH.sgGi', 'CUSTOMER');
+INSERT INTO usuario (username, name, password, role) VALUES ('fperez', 'fulano pérez', '$2a$10$uCeFoJPHERu5dCJZTEQIsOC8WqdhN8QsOT2nJIVeUjy7yIfqxAHUq', 'OPERATOR');
+INSERT INTO usuario (username, name, password, role) VALUES ('mhernandez', 'mengano hernández', '$2a$10$kvD/uzv976mSDfgTo0LslOrUDLwZxNphWFEue5/XwM.1J8XtDS9wC', 'ADMINISTRATOR');
 
 -- CREACIÓN DE CATEGORIAS
 INSERT INTO especialidad (nombre) VALUES ('Equino');
