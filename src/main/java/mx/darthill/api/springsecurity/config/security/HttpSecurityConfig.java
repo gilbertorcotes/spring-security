@@ -1,6 +1,7 @@
 package mx.darthill.api.springsecurity.config.security;
 
 import mx.darthill.api.springsecurity.config.security.filter.JwtAuthenticationFilter;
+import mx.darthill.api.springsecurity.config.security.handler.CustomAuthenticationEntryPoint;
 import mx.darthill.api.springsecurity.persistence.util.Rol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,14 +15,20 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+//@EnableMethodSecurity(prePostEnabled = true)
+/*
+Cuando la seguridad esta absada en métodos esta anotación debe estar habilitada
+y la sección authorizeHttpRequests de SecurityFilterChain habilitada
+ */
 public class HttpSecurityConfig {
 
     @Autowired
@@ -29,6 +36,15 @@ public class HttpSecurityConfig {
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Autowired
+    private AuthenticationEntryPoint AuthenticationEntryPoint;
+    /*
+    Solo se utiliza cuando esta la versión 1 del filtro en donde se realizan las validaciones por coincidencia de rutas http
+     */
+
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -38,9 +54,23 @@ public class HttpSecurityConfig {
                 .sessionManagement(sessMagConfig -> sessMagConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(daoAuthProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//                .authorizeHttpRequests(authReqConfig -> {
-//                    buildRequestMatchersV2(authReqConfig); //Se desvincula por completo el matchers y los permisos se manejan de manera personalizada
-//                })
+                .authorizeHttpRequests(authReqConfig -> {
+                    buildRequestMatchers(authReqConfig); //Se desvincula por completo el matchers y los permisos se manejan de manera personalizada
+                })
+                /*
+                Cuando esta deshabilkitadoa la anotación de seguridad basada en métodos
+                authorizeHttpRequests debe estar habilitado
+                V2 solo tiene configurados los endpoints publicos
+                V1 maneja la autorización por roles y coincidencia de peticiones http
+                 */
+                .exceptionHandling( exceptionConfig -> {
+                    exceptionConfig.authenticationEntryPoint(AuthenticationEntryPoint);
+                    exceptionConfig.accessDeniedHandler(accessDeniedHandler);
+                })
+                /*
+                Solo se utiliza cuando esta la versión 1 del filtro en donde se realizan las validaciones por coincidencia de rutas http
+                y con la anotación del  @Autowired private AuthenticationEntryPoint AuthenticationEntryPoint;
+                 */
                 .build();
 
         return filterChain;
