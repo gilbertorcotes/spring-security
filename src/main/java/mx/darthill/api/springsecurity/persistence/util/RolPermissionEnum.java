@@ -1,6 +1,6 @@
 package mx.darthill.api.springsecurity.persistence.util;
 
-public enum RolPermission {
+public enum RolPermissionEnum {
 
     READ_ALL_VETERINARIOS,
     READ_ONE_VETERINARIOS,

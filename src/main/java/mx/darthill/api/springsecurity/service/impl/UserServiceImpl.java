@@ -1,10 +1,12 @@
 package mx.darthill.api.springsecurity.service.impl;
 
 import mx.darthill.api.springsecurity.dto.SaveUsuario;
-import mx.darthill.api.springsecurity.exeption.InvalidPasswordException;
-import mx.darthill.api.springsecurity.persistence.entity.Usuario;
-import mx.darthill.api.springsecurity.persistence.repository.UserRepository;
-import mx.darthill.api.springsecurity.persistence.util.Rol;
+import mx.darthill.api.springsecurity.exception.InvalidPasswordException;
+import mx.darthill.api.springsecurity.exception.ObjectNotFoundException;
+import mx.darthill.api.springsecurity.persistence.entity.security.Role;
+import mx.darthill.api.springsecurity.persistence.entity.security.Usuario;
+import mx.darthill.api.springsecurity.persistence.repository.security.UserRepository;
+import mx.darthill.api.springsecurity.service.RoleService;
 import mx.darthill.api.springsecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +24,9 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoleService roleService;
+
     @Override
     public Usuario resiteredOneUsuario(SaveUsuario newUser) {
 
@@ -31,7 +36,11 @@ public class UserServiceImpl implements UserService{
         usuario.setPassword(passwordEncoder.encode(newUser.getPassword()));
         usuario.setName(newUser.getNombre());
         usuario.setUsername(newUser.getUsername());
-        usuario.setRole(Rol.CUSTOMER);
+
+        Role defaultRole = roleService.findDefaultRole()
+                .orElseThrow(() -> new ObjectNotFoundException("Rol no encontrado"));
+        usuario.setRole(defaultRole);
+//        usuario.setRole(RolEnum.CUSTOMER);   //Se utiliza con Emuneraciones
 
         return userRepository.save(usuario);
     }
@@ -42,11 +51,14 @@ public class UserServiceImpl implements UserService{
     }
 
     private void validatePassword(SaveUsuario newUser) {
+
+        System.out.println("Entro a Validate");
+
         if(!StringUtils.hasText(newUser.getPassword()) || !StringUtils.hasText(newUser.getRepeatedPassword())){
-            throw new InvalidPasswordException("Passwords no coinciden");
+            throw new InvalidPasswordException("Passwords no coinciden en esta vacio " + StringUtils.hasText(newUser.getPassword()));
         }
         if(!newUser.getPassword().equals(newUser.getRepeatedPassword())){
-            throw new InvalidPasswordException("Passwords no coinciden");
+            throw new InvalidPasswordException("Passwords no coinciden no corresponden");
         }
     }
 }

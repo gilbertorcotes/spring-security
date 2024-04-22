@@ -1,8 +1,7 @@
-package mx.darthill.api.springsecurity.persistence.entity;
+package mx.darthill.api.springsecurity.persistence.entity.security;
 
 import jakarta.persistence.*;
-import mx.darthill.api.springsecurity.persistence.util.Rol;
-import org.hibernate.validator.constraints.UniqueElements;
+import mx.darthill.api.springsecurity.persistence.util.RolEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,8 +22,9 @@ public class Usuario implements UserDetails {
     private String username;
     private String name;
     private String password;
-    @Enumerated(EnumType.STRING)
-    private Rol role;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -33,12 +33,21 @@ public class Usuario implements UserDetails {
 
         if(role.getPermissions() == null) return null;
 
+//        List<SimpleGrantedAuthority> authorities = role.getPermissions().stream()
+//                .map(each -> each.name())
+//                .map(each -> new SimpleGrantedAuthority(each))
+//                .collect(Collectors.toList());
+//        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
+
+        /*
+        La seccion anterior se remplaza para leer de la base, porque hasta este punto se usaba para enumeraciones
+         */
         List<SimpleGrantedAuthority> authorities = role.getPermissions().stream()
-                .map(each -> each.name())
+                .map(each -> each.getOperation().getName())
                 .map(each -> new SimpleGrantedAuthority(each))
                 .collect(Collectors.toList());
 
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.getName()));
         return authorities;
     }
 
@@ -92,11 +101,11 @@ public class Usuario implements UserDetails {
         this.password = password;
     }
 
-    public Rol getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(Rol role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

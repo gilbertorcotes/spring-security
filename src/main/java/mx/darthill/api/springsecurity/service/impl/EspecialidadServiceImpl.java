@@ -1,7 +1,7 @@
 package mx.darthill.api.springsecurity.service.impl;
 
 import mx.darthill.api.springsecurity.dto.SaveEspecialidad;
-import mx.darthill.api.springsecurity.exeption.ObjectNotFoundException;
+import mx.darthill.api.springsecurity.exception.ObjectNotFoundException;
 import mx.darthill.api.springsecurity.persistence.entity.Especialidad;
 import mx.darthill.api.springsecurity.persistence.repository.EspecialidadRepository;
 import mx.darthill.api.springsecurity.service.EspecialidadService;

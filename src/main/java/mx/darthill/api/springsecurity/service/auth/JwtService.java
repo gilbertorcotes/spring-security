@@ -18,11 +18,11 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-    @Value("${security.jwt.secret-key}")
-    private String SECRET_KEY;
-
     @Value("${security.jwt.expiration-in-minutes}")
     private Long EXPIRATION_IN_MINUTES;
+
+    @Value("${security.jwt.secret-key}")
+    private String SECRET_KEY;
 
     public String generateToken(UserDetails usuario, Map<String, Object> extraClaims) {
 

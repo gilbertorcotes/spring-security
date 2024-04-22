@@ -1,8 +1,7 @@
 package mx.darthill.api.springsecurity.config.security;
 
-import mx.darthill.api.springsecurity.exeption.ObjectNotFoundException;
-import mx.darthill.api.springsecurity.persistence.repository.UserRepository;
-import org.apache.catalina.User;
+import mx.darthill.api.springsecurity.exception.ObjectNotFoundException;
+import mx.darthill.api.springsecurity.persistence.repository.security.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

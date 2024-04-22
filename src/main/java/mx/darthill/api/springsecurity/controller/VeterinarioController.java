@@ -44,7 +44,7 @@ public class VeterinarioController {
 
         return ResponseEntity.notFound().build();
     }
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
     @PostMapping
     public ResponseEntity<Veterinarios> create(@RequestBody @Valid SaveVeterinario saveVeterinario){
 

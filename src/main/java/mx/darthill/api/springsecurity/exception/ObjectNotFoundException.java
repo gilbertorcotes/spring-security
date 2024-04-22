@@ -1,4 +1,4 @@
-package mx.darthill.api.springsecurity.exeption;
+package mx.darthill.api.springsecurity.exception;
 
 public class ObjectNotFoundException extends RuntimeException{
     public ObjectNotFoundException() {

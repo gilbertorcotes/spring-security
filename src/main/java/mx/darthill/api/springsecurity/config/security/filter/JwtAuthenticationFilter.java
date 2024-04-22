@@ -4,19 +4,16 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import mx.darthill.api.springsecurity.exeption.ObjectNotFoundException;
-import mx.darthill.api.springsecurity.persistence.entity.Usuario;
+import mx.darthill.api.springsecurity.exception.ObjectNotFoundException;
+import mx.darthill.api.springsecurity.persistence.entity.security.Usuario;
 import mx.darthill.api.springsecurity.service.UserService;
 import mx.darthill.api.springsecurity.service.auth.JwtService;
-import org.antlr.v4.runtime.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -58,6 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         );
         authToken.setDetails(new WebAuthenticationDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authToken);
+        System.out.println("Se acaba de setear el authentication");
 
         //Ejecutar el resto de los filtros
 

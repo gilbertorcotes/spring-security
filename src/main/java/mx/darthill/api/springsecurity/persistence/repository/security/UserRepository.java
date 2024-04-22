@@ -1,6 +1,6 @@
-package mx.darthill.api.springsecurity.persistence.repository;
+package mx.darthill.api.springsecurity.persistence.repository.security;
 
-import mx.darthill.api.springsecurity.persistence.entity.Usuario;
+import mx.darthill.api.springsecurity.persistence.entity.security.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
