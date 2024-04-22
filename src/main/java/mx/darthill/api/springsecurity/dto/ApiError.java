@@ -1,5 +1,7 @@
 package mx.darthill.api.springsecurity.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -7,6 +9,8 @@ public class ApiError implements Serializable {
 
     private String backendMessage;
     private String message;
+
+    @JsonFormat(pattern =  "yyyy/MM/dd HH:mm:ss")
     private LocalDateTime timestamp;
     private String url;
     private String method;

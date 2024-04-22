@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -19,6 +20,8 @@ public class VeterinarioController {
 
     @Autowired
     private VeterinariosService veterinariosService;
+
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'OPERATOR')")
     @GetMapping
     public ResponseEntity<Page<Veterinarios>> findAll(Pageable pageable){
         Page<Veterinarios> veterinariosPage = veterinariosService.findAll(pageable);
@@ -41,7 +44,7 @@ public class VeterinarioController {
 
         return ResponseEntity.notFound().build();
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMINISTRATOR')")
     @PostMapping
     public ResponseEntity<Veterinarios> create(@RequestBody @Valid SaveVeterinario saveVeterinario){
 
@@ -49,6 +52,7 @@ public class VeterinarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(veterinarios);
     }
 
+    @PreAuthorize("hasAnyRole('ADMINISTRATOR', 'OPERATOR')")
     @PutMapping("/{veterinariosId}")
     public ResponseEntity<Veterinarios> updateById(@PathVariable Long veterinariosId ,
                                                    @RequestBody @Valid SaveVeterinario saveVeterinario){
@@ -57,6 +61,7 @@ public class VeterinarioController {
         return ResponseEntity.ok(veterinarios);
     }
 
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     @PutMapping("/{veterinariosId}/disabled")
     public ResponseEntity<Veterinarios> disableById(@PathVariable Long veterinariosId){
 

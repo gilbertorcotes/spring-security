@@ -4,10 +4,9 @@ import mx.darthill.api.springsecurity.dto.RegisterUser;
 import mx.darthill.api.springsecurity.dto.SaveUsuario;
 import mx.darthill.api.springsecurity.dto.auth.AuthenticationRequest;
 import mx.darthill.api.springsecurity.dto.auth.AuthenticationResponse;
-import mx.darthill.api.springsecurity.exeption.ObjectNotFoundException;
-import mx.darthill.api.springsecurity.persistence.entity.Usuario;
+import mx.darthill.api.springsecurity.exception.ObjectNotFoundException;
+import mx.darthill.api.springsecurity.persistence.entity.security.Usuario;
 import mx.darthill.api.springsecurity.service.UserService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,13 +32,13 @@ public class AuthenticationService {
     public RegisterUser registerOneUsuario(SaveUsuario newUser) {
 
         Usuario usuario = userService.resiteredOneUsuario(newUser);
-
         RegisterUser usuarioDto = new RegisterUser();
-
         usuarioDto.setId(usuario.getId());
         usuarioDto.setNombre(usuario.getName());
         usuarioDto.setUsername(usuario.getUsername());
-        usuarioDto.setRol(usuario.getRole().name());
+        usuarioDto.setRol(usuario.getRole().getName());
+//        usuarioDto.setRol(usuario.getRole().name());  // Se usa solo en enumeraciones
+
 
         String jwt = jwtService.generateToken(usuario, generateExtraClaims(usuario));
         usuarioDto.setJwt(jwt);
@@ -50,7 +49,7 @@ public class AuthenticationService {
     private Map<String, Object> generateExtraClaims(Usuario usuario) {
         Map<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("name",usuario.getName());
-        extraClaims.put("role", usuario.getRole());
+        extraClaims.put("role", usuario.getRole().getName());
         extraClaims.put("authorities",usuario.getAuthorities());
 
         return extraClaims;
